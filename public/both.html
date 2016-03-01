@@ -1,9 +1,8 @@
-<!-- http://bl.ocks.org/mbostock/3371592 -->
-<!-- Colors from:  http://www.somersault1824.com/tips-for-designing-scientific-figures-for-color-blind-readers/ -->
-<!-- Color for tech is lime #24FF24 color for other is teal #009292 -->
-
 <!DOCTYPE html>
-<meta charset="utf-8">
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Document</title>
 <style>
 
 body {
@@ -26,17 +25,18 @@ body {
 }
 
 </style>
+</head>
+
 <body>
-<script src="../lib/d3.min.js" charset="utf-8"></script>
+<script src="http://d3js.org/d3.v3.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
 <script>
-
 var margin = {top: 20, right: 20, bottom: 30, left: 40},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
 var x0 = d3.scale.ordinal()
-    .rangeRoundBands([0, width], .1);
+    .rangeRoundBands([0, width], 0.1);
 
 var x1 = d3.scale.ordinal();
 
@@ -53,7 +53,7 @@ var yAxis = d3.svg.axis()
     .tickFormat(d3.format(".2s"));
 
 var color = d3.scale.ordinal()
-    .range(["#24FF24", "#009292", "#98abc5", "#8a89a6"]);
+    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -64,21 +64,15 @@ var svg = d3.select("body").append("svg")
 var yBegin;
 
 var innerColumns = {
-  "column1" : ["Number of Tech IPOs","Tech% Profitable"],
-  "column2" : ["Number of Other IPOs","Other% Profitable"]
+  "column1" : ["Under 5 Years","5 to 13 Years","14 to 17 Years"],
+  "column2" : ["18 to 24 Years"],
+  "column3" : ["25 to 44 Years"],
+  "column4" : ["45 to 64 Years", "65 Years and Over"]
 }
 
-d3.csv("dataipo1.csv", function(error, data) {
-  if (error) throw error;
-
-  // color.domain(d3.keys(data[0]).filter(function(key) { return key === "Number of Tech IPOs" || key === "Number of Other IPOs"; }));
-
-  // var numIPOs = d3.keys(data[0]).filter(function(key) { return key === "Number of Tech IPOs" || key === "Number of Other IPOs"; });
-
-  var columnHeaders = d3.keys(data[0]).filter(function(key) { return key !== "Year"; });
-
-  color.domain(d3.keys(data[0]).filter(function(key) { return key !== "Year"; }));
-
+d3.csv("data.csv", function(error, data) {
+  var columnHeaders = d3.keys(data[0]).filter(function(key) { return key !== "State"; });
+  color.domain(d3.keys(data[0]).filter(function(key) { return key !== "State"; }));
   data.forEach(function(d) {
     var yColumn = new Array();
     d.columnDetails = columnHeaders.map(function(name) {
@@ -98,19 +92,12 @@ d3.csv("dataipo1.csv", function(error, data) {
     });
   });
 
-
-  // data.forEach(function(d) {
-  //   var y0 = 0;
-  //   d.barGroups = numIPOs.map(function(name) { return {name: name, value: +d[name]}; }); //ages in example
-  //   d.profitable = color.domain().map(function(name) { return {name: name, y0: y0, y1: y0 += +d[name]}; });
-  //   d.total = d.profitable[d.profitable.length - 1].y1;
-  // });
-
-  x0.domain(data.map(function(d) { return d.Year; }));
-  // x1.domain(numIPOs).rangeRoundBands([0, x0.rangeBand()]);
+  x0.domain(data.map(function(d) { return d.State; }));
   x1.domain(d3.keys(innerColumns)).rangeRoundBands([0, x0.rangeBand()]);
-  y.domain([0, d3.max(data, function(d) { return d.total; })]);
-  // y.domain([0, d3.max(data, function(d) { return d3.max(d.barGroups, function(d) { return d.value; }); })]);
+
+  y.domain([0, d3.max(data, function(d) {
+    return d.total;
+  })]);
 
   svg.append("g")
       .attr("class", "x axis")
@@ -123,17 +110,9 @@ d3.csv("dataipo1.csv", function(error, data) {
     .append("text")
       .attr("transform", "rotate(-90)")
       .attr("y", 6)
-      .attr("dy", ".71em")
+      .attr("dy", ".7em")
       .style("text-anchor", "end")
-      .text("Number of IPOs");
-
-  // var year = svg.selectAll(".year")
-  //     .data(data)
-  //   .enter().append("g")
-  //     .attr("class", "year")
-  //     .attr("transform", function(d) { return "translate(" + x0(d.Year) + ",0)"; });
-
-  // year.selectAll("rect")
+      .text("");
 
   var project_stackedbar = svg.selectAll(".project_stackedbar")
       .data(data)
@@ -145,13 +124,19 @@ d3.csv("dataipo1.csv", function(error, data) {
       .data(function(d) { return d.columnDetails; })
     .enter().append("rect")
       .attr("width", x1.rangeBand())
-      .attr("x", function(d) { return x1(d.column); })
-      .attr("y", function(d) { return y(d.yEnd); })
-      .attr("height", function(d) { return y(d.yBegin) - y(d.yEnd); })
+      .attr("x", function(d) {
+        return x1(d.column);
+         })
+      .attr("y", function(d) {
+        return y(d.yEnd);
+      })
+      .attr("height", function(d) {
+        return y(d.yBegin) - y(d.yEnd);
+      })
       .style("fill", function(d) { return color(d.name); });
 
   var legend = svg.selectAll(".legend")
-      .data(columnHeaders.slice())
+      .data(columnHeaders.slice().reverse())
     .enter().append("g")
       .attr("class", "legend")
       .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
@@ -172,4 +157,5 @@ d3.csv("dataipo1.csv", function(error, data) {
 });
 
 </script>
-
+</body>
+</html>
