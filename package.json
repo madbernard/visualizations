@@ -1,0 +1,22 @@
+{
+  "name": "visualizations",
+  "version": "0.0.1",
+  "description": "d3 visualizations of some data",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.13.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/madbernard/visualizations.git"
+  },
+  "author": "Mad Bernard",
+  "bugs": {
+    "url": "https://github.com/madbernard/visualizations/issues"
+  },
+  "homepage": "https://github.com/madbernard/visualizations#readme"
+}
