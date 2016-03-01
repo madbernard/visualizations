@@ -1,3 +1,7 @@
+<!-- https://github.com/gencay/stackedGroupedChart -->
+<!-- http://www.somersault1824.com/tips-for-designing-scientific-figures-for-color-blind-readers/ -->
+<!-- https://www.easycalculation.com/colorconverter/rgb-color-converter.php -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,7 +57,7 @@ var yAxis = d3.svg.axis()
     .tickFormat(d3.format(".2s"));
 
 var color = d3.scale.ordinal()
-    .range(["#24FF24", "#009292", "#98abc5", "#8a89a6"]);
+    .range(["#009292", "#005454", "#FFB677", "#BF8959"]);
 
 var svg = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -64,11 +68,11 @@ var svg = d3.select("body").append("svg")
 var yBegin;
 
 var innerColumns = {
-  "column1" : ["Number of Tech IPOs","Tech% Profitable"],
-  "column2" : ["Number of Other IPOs","Other% Profitable"]
+  "column1" : ["Number of profitable Tech & Biotech IPOs","Number of unprofitable Tech & Biotech IPOs"],
+  "column2" : ["Number of profitable Other IPOs","Number of unprofitable Other IPOs"]
 }
 
-d3.csv("dataipo1.csv", function(error, data) {
+d3.csv("num-ipo.csv", function(error, data) {
   var columnHeaders = d3.keys(data[0]).filter(function(key) { return key !== "Year"; });
   color.domain(d3.keys(data[0]).filter(function(key) { return key !== "Year"; }));
   data.forEach(function(d) {
@@ -134,7 +138,7 @@ d3.csv("dataipo1.csv", function(error, data) {
       .style("fill", function(d) { return color(d.name); });
 
   var legend = svg.selectAll(".legend")
-      .data(columnHeaders.slice().reverse())
+      .data(columnHeaders.slice())
     .enter().append("g")
       .attr("class", "legend")
       .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
