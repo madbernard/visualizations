@@ -49,29 +49,29 @@ td {
       </thead>
 
       <tbody>
-          <tr>
+          <tr class="usa">
               <td class="geo">USA</td>
-              <td class="usa-jan"></td>
-              <td class="usa-feb"></td>
-              <td class="usa-mar"></td>
-              <td class="usa-april"></td>
-              <td class="usa-may"></td>
+              <td class="jan"></td>
+              <td class="feb"></td>
+              <td class="mar"></td>
+              <td class="april"></td>
+              <td class="may"></td>
           </tr>
-          <tr>
+          <tr class="india">
               <td class="geo">India</td>
-              <td class="india-jan">Data india 02</td>
-              <td class="india-feb">Data india 02</td>
-              <td class="india-mar">Data india 02</td>
-              <td class="india-april">Data india 0april</td>
-              <td class="india-may">Data india 0may</td>
+              <td class="jan"></td>
+              <td class="feb"></td>
+              <td class="mar"></td>
+              <td class="april"></td>
+              <td class="may"></td>
           </tr>
-          <tr>
+          <tr class="asia">
               <td class="geo">Asia</td>
-              <td class="asia-jan">Data asia 02</td>
-              <td class="asia-feb">Data asia 02</td>
-              <td class="asia-mar">Data asia 02</td>
-              <td class="asia-april">Data asia 0april</td>
-              <td class="asia-may">Data asia 0may</td>
+              <td class="jan"></td>
+              <td class="feb"></td>
+              <td class="mar"></td>
+              <td class="april"></td>
+              <td class="may"></td>
           </tr>
 
       </tbody>
@@ -83,57 +83,49 @@ td {
 
 
 var foo = [{
-  X: 40,
-  NonX: 100,
-  Total: 140
+  month: 'jan',
+  X: 10,
+  NonX: 100
 },{
-  X: 120,
-  NonX: 200,
-  Total: 320
-},{
-  X: Math.random(),
-  NonX: Math.random(),
-  Total: Math.random() * 10
-},{
-  X: Math.random(),
-  NonX: Math.random(),
-  Total: Math.random() * 10
+  month: 'feb',
+  X: 240,
+  NonX: 200
 }];
 
-// data.forEach(function(d){
-//   d.pieVals = [d.X, d.NonX];
-// })
+foo.forEach(function(d){
 
-var svg = d3.select('body')
-  .append('svg')
-  .attr('width', 500)
-  .attr('height', 500);
+  var svg = d3.select('.india .' + d.month)
+    .append('svg')
+    .attr('width', d.X + d.NonX)
+    .attr('height', d.X + d.NonX);
 
-var arc = d3.svg.arc().innerRadius(0).outerRadius(20),
-    pie = d3.layout.pie()
-      .value(function(d){ return d }),
-    color = d3.scale.category10();
+  var arc = d3.svg.arc().innerRadius(0).outerRadius(20),
+      pie = d3.layout.pie()
+        .value(function(d){ return d }),
+      color = d3.scale.category10();
 
-var pies = svg.selectAll('.pie')
-  .data(foo)
-  .enter()
-  .append('g')
-  .attr('class', 'pie')
-  .attr('transform',function(d,i){
-    return 'translate(' + 20 + ',' + (i + 1) * 40 + ')';
-  })
+  var pies = svg.selectAll('.pie')
+    .data(foo)
+    .enter()
+    .append('g')
+    .attr('class', 'pie')
+    .attr('transform',function(d,i){
+      return 'translate(' + 20 + ',' + (i + 1) * 40 + ')';
+    })
 
-pies.selectAll('.slice')
-  .data(function(d){
-    return pie([d.X, d.NonX]);
-  })
-  .enter()
-  .append('path')
-  .attr('d',  arc)
-  .style('fill', function(d,i){
-    return color(i);
-  });
+  pies
+    .selectAll('.slice')
+    .data(function(d){
+      return pie([d.X, d.NonX]);
+    })
+    .enter()
+    .append('path')
+    .attr('d',  arc)
+    .style('fill', function(d,i){
+      return color(i);
+    });
 
+})
 
 
 </script>
