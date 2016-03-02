@@ -1,0 +1,141 @@
+<!-- https://github.com/gencay/stackedGroupedChart -->
+<!-- http://www.somersault1824.com/tips-for-designing-scientific-figures-for-color-blind-readers/ -->
+<!-- https://www.easycalculation.com/colorconverter/rgb-color-converter.php -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Ridesharing Apps by Geographic Area</title>
+<style>
+
+body {
+  font: 10px sans-serif;
+}
+
+.arc path {
+  stroke: #fff;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
+td {
+  text-align: center;
+  width: 220px;
+  height: 220px;
+}
+
+</style>
+</head>
+
+<body>
+
+  <table>
+      <thead>
+          <tr>
+              <th></th>
+              <th>January</th>
+              <th>February</th>
+              <th>March</th>
+              <th>April</th>
+              <th>May</th>
+          </tr>
+      </thead>
+
+      <tbody>
+          <tr>
+              <td class="geo">USA</td>
+              <td class="usa-jan"></td>
+              <td class="usa-feb"></td>
+              <td class="usa-mar"></td>
+              <td class="usa-april"></td>
+              <td class="usa-may"></td>
+          </tr>
+          <tr>
+              <td class="geo">India</td>
+              <td class="india-jan">Data india 02</td>
+              <td class="india-feb">Data india 02</td>
+              <td class="india-mar">Data india 02</td>
+              <td class="india-april">Data india 0april</td>
+              <td class="india-may">Data india 0may</td>
+          </tr>
+          <tr>
+              <td class="geo">Asia</td>
+              <td class="asia-jan">Data asia 02</td>
+              <td class="asia-feb">Data asia 02</td>
+              <td class="asia-mar">Data asia 02</td>
+              <td class="asia-april">Data asia 0april</td>
+              <td class="asia-may">Data asia 0may</td>
+          </tr>
+
+      </tbody>
+  </table>
+
+
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script>
+
+
+var foo = [{
+  X: 40,
+  NonX: 100,
+  Total: 140
+},{
+  X: 120,
+  NonX: 200,
+  Total: 320
+},{
+  X: Math.random(),
+  NonX: Math.random(),
+  Total: Math.random() * 10
+},{
+  X: Math.random(),
+  NonX: Math.random(),
+  Total: Math.random() * 10
+}];
+
+// data.forEach(function(d){
+//   d.pieVals = [d.X, d.NonX];
+// })
+
+var svg = d3.select('body')
+  .append('svg')
+  .attr('width', 500)
+  .attr('height', 500);
+
+var arc = d3.svg.arc().innerRadius(0).outerRadius(20),
+    pie = d3.layout.pie()
+      .value(function(d){ return d }),
+    color = d3.scale.category10();
+
+var pies = svg.selectAll('.pie')
+  .data(foo)
+  .enter()
+  .append('g')
+  .attr('class', 'pie')
+  .attr('transform',function(d,i){
+    return 'translate(' + 20 + ',' + (i + 1) * 40 + ')';
+  })
+
+pies.selectAll('.slice')
+  .data(function(d){
+    return pie([d.X, d.NonX]);
+  })
+  .enter()
+  .append('path')
+  .attr('d',  arc)
+  .style('fill', function(d,i){
+    return color(i);
+  });
+
+
+
+</script>
+</body>
+</html>
