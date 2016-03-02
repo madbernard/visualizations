@@ -1,7 +1,3 @@
-<!-- https://github.com/gencay/stackedGroupedChart -->
-<!-- http://www.somersault1824.com/tips-for-designing-scientific-figures-for-color-blind-readers/ -->
-<!-- https://www.easycalculation.com/colorconverter/rgb-color-converter.php -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,19 +6,18 @@
 <style>
 
 body {
-  font: 10px sans-serif;
-}
-
-.arc path {
-  stroke: #fff;
+  font: 20px sans-serif;
+  background-image: url("100.png");
+  background-repeat: no-repeat;
 }
 
 table {
+  margin-top: 80px;
   border-collapse: collapse;
 }
 
-table, th, td {
-  border: 1px solid black;
+th, td {
+  border-bottom: 1px dashed #333;
 }
 
 td {
@@ -31,11 +26,16 @@ td {
   height: 220px;
 }
 
+.geo {
+  padding-right: 20px;
+  font-weight: bold;
+}
+
 </style>
 </head>
 
 <body>
-
+  <h1>Rideshare App %installbase over >10M Android Phones</h1>
   <table>
       <thead>
           <tr>
@@ -49,79 +49,33 @@ td {
       </thead>
 
       <tbody>
-          <tr>
+          <tr class="usa">
               <td class="geo">USA</td>
-              <td class="usa-jan"></td>
-              <td class="usa-feb"></td>
-              <td class="usa-mar"></td>
-              <td class="usa-april"></td>
-              <td class="usa-may"></td>
+              <td class="jan"><img src="usa-jan.png"></td>
+              <td class="feb"><img src="usa-feb.png"></td>
+              <td class="mar"><img src="usa-mar.png"></td>
+              <td class="april"><img src="usa-april.png"></td>
+              <td class="may"><img src="usa-may.png"></td>
           </tr>
-          <tr>
+          <tr class="india">
               <td class="geo">India</td>
-              <td class="india-jan">Data india 02</td>
-              <td class="india-feb">Data india 02</td>
-              <td class="india-mar">Data india 02</td>
-              <td class="india-april">Data india 0april</td>
-              <td class="india-may">Data india 0may</td>
+              <td class="jan"><img src="india-jan.png"></td>
+              <td class="feb"><img src="india-feb.png"></td>
+              <td class="mar"><img src="india-mar.png"></td>
+              <td class="april"><img src="india-april.png"></td>
+              <td class="may"><img src="india-may.png"></td>
           </tr>
-          <tr>
+          <tr class="asia">
               <td class="geo">Asia</td>
-              <td class="asia-jan">Data asia 02</td>
-              <td class="asia-feb">Data asia 02</td>
-              <td class="asia-mar">Data asia 02</td>
-              <td class="asia-april">Data asia 0april</td>
-              <td class="asia-may">Data asia 0may</td>
+              <td class="jan"><img src="asia-jan.png"></img></td>
+              <td class="feb"><img src="asia-feb.png"></img></td>
+              <td class="mar"><img src="asia-mar.png"></img></td>
+              <td class="april"><img src="asia-april.png"></img></td>
+              <td class="may"><img src="asia-may.png"></img></td>
           </tr>
 
       </tbody>
   </table>
 
-
-<script src="https://d3js.org/d3.v3.min.js"></script>
-<script>
-
-var width = 216,
-    height = 216,
-    radius = Math.min(width, height) / 2;
-
-var color = d3.scale.ordinal()
-    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
-
-var arc = d3.svg.arc()
-    .outerRadius(radius - 10)
-    .innerRadius(0);
-
-var pie = d3.layout.pie()
-    .sort(null)
-    .value(function(d) { return d.population; });
-
-var svg = d3.select(".usa-jan").append("svg")
-    .attr("width", width)
-    .attr("height", height)
-  .append("g")
-    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
-d3.csv("data.csv", type, function(error, data) {
-  if (error) throw error;
-
-  var g = svg.selectAll(".arc")
-      .data(pie(data))
-    .enter().append("g")
-      .attr("class", "arc");
-
-  g.append("path")
-      .attr("d", arc)
-      .style("fill", function(d) { return color(d.data.age); });
-
-});
-
-function type(d) {
-  d.population = +d.population;
-  return d;
-}
-
-
-</script>
 </body>
 </html>
