@@ -10,19 +10,18 @@
 <style>
 
 body {
-  font: 10px sans-serif;
-}
-
-.arc path {
-  stroke: #fff;
+  font: 20px sans-serif;
+  background-image: url("100.png");
+  background-repeat: no-repeat;
 }
 
 table {
+  margin-top: 80px;
   border-collapse: collapse;
 }
 
-table, th, td {
-  border: 1px solid black;
+th, td {
+  border-bottom: 1px dashed #333;
 }
 
 td {
@@ -31,11 +30,16 @@ td {
   height: 220px;
 }
 
+.geo {
+  padding-right: 20px;
+  font-weight: bold;
+}
+
 </style>
 </head>
 
 <body>
-
+  <h1>Rideshare App %installbase over >10M Android Phones</h1>
   <table>
       <thead>
           <tr>
@@ -51,19 +55,19 @@ td {
       <tbody>
           <tr class="usa">
               <td class="geo">USA</td>
-              <td class="jan"></td>
-              <td class="feb"></td>
-              <td class="mar"></td>
-              <td class="april"></td>
-              <td class="may"></td>
+              <td class="jan"><img src="usa-jan.png"></td>
+              <td class="feb"><img src="usa-feb.png"></td>
+              <td class="mar"><img src="usa-mar.png"></td>
+              <td class="april"><img src="usa-april.png"></td>
+              <td class="may"><img src="usa-may.png"></td>
           </tr>
           <tr class="india">
               <td class="geo">India</td>
-              <td class="jan"></td>
-              <td class="feb"></td>
-              <td class="mar"></td>
-              <td class="april"></td>
-              <td class="may"></td>
+              <td class="jan"><img src="india-jan.png"></td>
+              <td class="feb"><img src="india-feb.png"></td>
+              <td class="mar"><img src="india-mar.png"></td>
+              <td class="april"><img src="india-april.png"></td>
+              <td class="may"><img src="india-may.png"></td>
           </tr>
           <tr class="asia">
               <td class="geo">Asia</td>
@@ -77,57 +81,5 @@ td {
       </tbody>
   </table>
 
-
-<script src="https://d3js.org/d3.v3.min.js"></script>
-<script>
-
-
-var foo = [{
-  month: 'jan',
-  X: 180,
-  NonX: 100
-},{
-  month: 'feb',
-  X: 240,
-  NonX: 200
-}];
-
-foo.forEach(function(d){
-
-  var svg = d3.select('.india .' + d.month)
-    .append('svg')
-    .attr('width', d.X + d.NonX)
-    .attr('height', d.X + d.NonX);
-
-  var arc = d3.svg.arc().innerRadius(0).outerRadius(20),
-      pie = d3.layout.pie()
-        .value(function(d){ return d }),
-      color = d3.scale.category10();
-
-  var pies = svg.selectAll('.pie')
-    .data(foo)
-    .enter()
-    .append('g')
-    .attr('class', 'pie')
-    .attr('transform',function(d,i){
-      return 'translate(' + 20 + ',' + (i + 1) * 40 + ')';
-    })
-
-  pies
-    .selectAll('.slice')
-    .data(function(d){
-      return pie([d.X, d.NonX]);
-    })
-    .enter()
-    .append('path')
-    .attr('d',  arc)
-    .style('fill', function(d,i){
-      return color(i);
-    });
-
-})
-
-
-</script>
 </body>
 </html>
